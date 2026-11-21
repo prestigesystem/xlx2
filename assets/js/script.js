@@ -20,6 +20,9 @@
             hero_sub: "Engineered natively for RobRun with zero visual clutter. Only the tools you actually rely on, right where you expect them.",
             hero_cta_plans: "View Plans",
             hero_cta_preview: "Try Live Menu",
+            hero_spec_1: "Blatant Hours",
+            hero_spec_2: "Proven Bans",
+            hero_spec_3: "64-Bit Native",
 
             feat_eyebrow: "Capabilities",
             feat_title: "Full awareness without screen clutter.",
@@ -49,6 +52,7 @@
             show_eyebrow: "Showcase",
             show_title: "See it live in-game.",
             show_desc: "Unedited 1080p 60fps RobRun gameplay showing player chams, raid & cash tracking, and smooth target acquisition.",
+            show_chrome_lbl: "PRESTIGE · IN-GAME CAPTURE",
             show_aria_player: "In-game showcase video",
             show_aria_play: "Play or pause video",
             show_aria_mute: "Mute or unmute audio",
@@ -318,6 +322,12 @@
             faq_q4: "What happens if I change or upgrade my PC?",
             faq_a4: "1 Month and Lifetime license holders can request a free HWID reset by opening a support ticket at discord.gg/prstg.",
 
+            cta_eyebrow: "Get Started",
+            cta_title: "Ready when you are.",
+            cta_desc: "Instant license delivery, regular updates, and direct support through our Discord community.",
+            cta_btn_dc: "Join discord.gg/prstg",
+            cta_btn_plans: "Compare Plans",
+
             foot_features: "Features",
             foot_showcase: "Showcase",
             foot_preview: "Live Menu",
@@ -392,6 +402,9 @@
             hero_sub: "Sade arayüzü ve kararlı yapısıyla ekranınızı yormaz. Yalnızca işinize yarayan araçlar, istediğiniz anda elinizin altında.",
             hero_cta_plans: "Paketleri İncele",
             hero_cta_preview: "Canlı Menüyü Dene",
+            hero_spec_1: "Blatant Saat",
+            hero_spec_2: "Kanıtlanmış Ban",
+            hero_spec_3: "64-Bit Native",
 
             feat_eyebrow: "Özellikler",
             feat_title: "Gereksiz kalabalık olmadan tam kontrol.",
@@ -421,6 +434,7 @@
             show_eyebrow: "Önizleme",
             show_title: "Oyun içinde canlı görün.",
             show_desc: "Oyuncu chams, nakit & raid takibi ve yumuşak nişan geçişlerini 1080p 60fps kesintisiz oynanış kaydında izleyin.",
+            show_chrome_lbl: "PRESTIGE · OYUN İÇİ KAYIT",
             show_aria_player: "Oyun içi önizleme videosu",
             show_aria_play: "Videoyu oynat veya duraklat",
             show_aria_mute: "Sesi kapat veya aç",
@@ -690,6 +704,12 @@
             faq_q4: "Bilgisayar değiştirirsem lisansım ne olur?",
             faq_a4: "1 aylık ve sınırsız paket kullanıcıları discord.gg/prstg üzerinden destek talebi açarak ücretsiz HWID sıfırlama talep edebilir.",
 
+            cta_eyebrow: "Başlayın",
+            cta_title: "Hazır olduğunuzda başlayın.",
+            cta_desc: "Discord sunucumuz üzerinden hızlı teslimat, düzenli güncellemeler ve doğrudan destek.",
+            cta_btn_dc: "discord.gg/prstg'ye Katıl",
+            cta_btn_plans: "Paketleri İncele",
+
             foot_features: "Özellikler",
             foot_showcase: "Önizleme",
             foot_preview: "Canlı Menü",
@@ -851,9 +871,47 @@
         applyLanguage(currentLang, false);
     }
 
+    var bootAt = performance.now();
+
+    function initPreloader() {
+        var preloader = document.getElementById("site-preloader");
+        var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (!preloader || reduced) {
+            if (preloader) preloader.hidden = true;
+            document.documentElement.classList.add("site-ready");
+            return;
+        }
+
+        var done = false;
+        function finish() {
+            if (done) return;
+            done = true;
+            var elapsed = performance.now() - bootAt;
+            var wait = Math.max(0, 740 - elapsed);
+            setTimeout(function () {
+                preloader.classList.add("is-leaving");
+                document.documentElement.classList.add("site-ready");
+                setTimeout(function () {
+                    preloader.hidden = true;
+                }, 760);
+            }, wait);
+        }
+
+        if (document.readyState === "complete") {
+            finish();
+        } else {
+            window.addEventListener("load", finish, { once: true });
+            setTimeout(finish, 1150);
+        }
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
+        initPreloader();
+        initAmbientCanvas();
         initNavbarEffects();
         init3DStage();
+        initMagneticButtons();
+        initCounters();
         initShowcasePlayer();
         initLiveMenu();
         initModal();
@@ -862,9 +920,158 @@
         initI18n();
     });
 
+    function initAmbientCanvas() {
+        var canvas = document.getElementById("bg-canvas");
+        if (!canvas || !canvas.getContext) return;
+        var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (reduced) return;
+
+        var ctx = canvas.getContext("2d");
+        if (!ctx) return;
+
+        var finePointer = !window.matchMedia || window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+        var width = 0;
+        var height = 0;
+        var dpr = 1;
+        var particles = [];
+        var rafId = 0;
+        var running = false;
+
+        var mouseActive = false;
+        var targetMx = 0;
+        var targetMy = 0;
+        var curMx = 0;
+        var curMy = 0;
+        var mouseAlpha = 0;
+
+        function createParticle(randomY) {
+            return {
+                x: Math.random() * width,
+                y: randomY ? Math.random() * height : height + 10 + Math.random() * 40,
+                r: 0.55 + Math.random() * 1.15,
+                vx: (Math.random() - 0.5) * 0.14,
+                vy: -(0.08 + Math.random() * 0.22),
+                alpha: 0.08 + Math.random() * 0.24,
+                phase: Math.random() * Math.PI * 2,
+                speed: 0.008 + Math.random() * 0.014
+            };
+        }
+
+        function resize() {
+            width = window.innerWidth || document.documentElement.clientWidth || 1280;
+            height = window.innerHeight || document.documentElement.clientHeight || 800;
+            dpr = Math.min(window.devicePixelRatio || 1, 2);
+            canvas.width = Math.round(width * dpr);
+            canvas.height = Math.round(height * dpr);
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+            var targetCount = width < 768 ? 22 : 44;
+            if (particles.length === 0) {
+                for (var i = 0; i < targetCount; i++) {
+                    particles.push(createParticle(true));
+                }
+            } else if (particles.length < targetCount) {
+                while (particles.length < targetCount) particles.push(createParticle(true));
+            } else if (particles.length > targetCount) {
+                particles.length = targetCount;
+            }
+        }
+
+        if (finePointer) {
+            window.addEventListener("mousemove", function (e) {
+                if (!mouseActive) {
+                    curMx = e.clientX;
+                    curMy = e.clientY;
+                }
+                mouseActive = true;
+                targetMx = e.clientX;
+                targetMy = e.clientY;
+            }, { passive: true });
+
+            document.addEventListener("mouseleave", function () {
+                mouseActive = false;
+            });
+        }
+
+        function draw() {
+            if (!running) return;
+            ctx.clearRect(0, 0, width, height);
+
+            if (finePointer) {
+                curMx += (targetMx - curMx) * 0.065;
+                curMy += (targetMy - curMy) * 0.065;
+                mouseAlpha += ((mouseActive ? 1 : 0) - mouseAlpha) * 0.05;
+                if (mouseAlpha > 0.01) {
+                    var grad = ctx.createRadialGradient(curMx, curMy, 0, curMx, curMy, 340);
+                    grad.addColorStop(0, "rgba(255, 255, 255, " + (0.036 * mouseAlpha).toFixed(4) + ")");
+                    grad.addColorStop(0.45, "rgba(255, 255, 255, " + (0.011 * mouseAlpha).toFixed(4) + ")");
+                    grad.addColorStop(1, "rgba(255, 255, 255, 0)");
+                    ctx.fillStyle = grad;
+                    ctx.fillRect(curMx - 340, curMy - 340, 680, 680);
+                }
+            }
+
+            for (var i = 0; i < particles.length; i++) {
+                var p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.phase += p.speed;
+
+                if (p.y < -12) {
+                    p.y = height + 10;
+                    p.x = Math.random() * width;
+                }
+                if (p.x < -12) p.x = width + 12;
+                else if (p.x > width + 12) p.x = -12;
+
+                var twinkle = 0.65 + 0.35 * Math.sin(p.phase);
+                var op = p.alpha * twinkle;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fillStyle = "rgba(245, 247, 252, " + op.toFixed(3) + ")";
+                ctx.fill();
+            }
+
+            rafId = requestAnimationFrame(draw);
+        }
+
+        function start() {
+            if (running || document.hidden) return;
+            running = true;
+            rafId = requestAnimationFrame(draw);
+        }
+
+        function stop() {
+            running = false;
+            if (rafId) {
+                cancelAnimationFrame(rafId);
+                rafId = 0;
+            }
+        }
+
+        var resizeTimer = 0;
+        window.addEventListener("resize", function () {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(resize, 140);
+        }, { passive: true });
+
+        document.addEventListener("visibilitychange", function () {
+            if (document.hidden) stop();
+            else start();
+        });
+
+        resize();
+        start();
+    }
+
     function initNavbarEffects() {
         var navbar = document.getElementById("navbar");
-        var progress = document.getElementById("scroll-progress");
+        var navShell = document.getElementById("nav-shell");
+        var scrollRing = document.getElementById("nav-scroll-ring");
+        var scrollCue = document.getElementById("scroll-cue");
+        var navMenu = document.getElementById("nav-menu");
+        var navPill = document.getElementById("nav-pill-bg");
+        var navBeam = document.getElementById("nav-beam");
         var navLinks = Array.prototype.slice.call(document.querySelectorAll(".nav-menu .nav-link[data-section]"));
         var sections = navLinks.map(function (link) {
             return {
@@ -873,6 +1080,68 @@
                 el: document.getElementById(link.getAttribute("data-section"))
             };
         }).filter(function (s) { return !!s.el; });
+
+        var RING_CIRC = 114.67;
+        var activeLink = null;
+        var hoveredLink = null;
+
+        if (navbar && (!window.matchMedia || window.matchMedia("(hover: hover) and (pointer: fine)").matches)) {
+            navbar.addEventListener("mousemove", function (e) {
+                var rect = navbar.getBoundingClientRect();
+                var x = e.clientX - rect.left;
+                navbar.style.setProperty("--nav-mx", x.toFixed(1) + "px");
+            }, { passive: true });
+        }
+
+        function movePillTo(link) {
+            if (!navPill || !navMenu) return;
+            if (!link || window.innerWidth <= 860) {
+                navPill.classList.remove("visible");
+                if (navBeam) navBeam.classList.remove("visible");
+                return;
+            }
+            var w = link.offsetWidth;
+            if (w <= 0) {
+                navPill.classList.remove("visible");
+                if (navBeam) navBeam.classList.remove("visible");
+                return;
+            }
+            var left = link.offsetLeft;
+            navPill.style.width = w + "px";
+            navPill.style.transform = "translateX(" + left + "px)";
+            navPill.classList.add("visible");
+
+            if (navBeam) {
+                var beamW = Math.max(26, w - 18);
+                var beamLeft = left + (w - beamW) * 0.5;
+                navBeam.style.width = beamW.toFixed(1) + "px";
+                navBeam.style.transform = "translateX(" + beamLeft.toFixed(1) + "px)";
+                navBeam.classList.add("visible");
+            }
+        }
+
+        if (navMenu && navPill) {
+            navLinks.forEach(function (link) {
+                link.addEventListener("mouseenter", function () {
+                    hoveredLink = link;
+                    movePillTo(hoveredLink);
+                });
+                link.addEventListener("focus", function () {
+                    hoveredLink = link;
+                    movePillTo(hoveredLink);
+                });
+            });
+            navMenu.addEventListener("mouseleave", function () {
+                hoveredLink = null;
+                movePillTo(activeLink);
+            });
+            navMenu.addEventListener("focusout", function (e) {
+                if (!navMenu.contains(e.relatedTarget)) {
+                    hoveredLink = null;
+                    movePillTo(activeLink);
+                }
+            });
+        }
 
         var ticking = false;
         function updateScrollState() {
@@ -883,10 +1152,14 @@
                 navbar.classList.toggle("scrolled", y > 24);
             }
 
-            if (progress) {
+            if (scrollCue) {
+                scrollCue.classList.toggle("hidden-cue", y > 80);
+            }
+
+            if (scrollRing) {
                 var docH = document.documentElement.scrollHeight - window.innerHeight;
-                var pct = docH > 0 ? Math.min(100, Math.max(0, (y / docH) * 100)) : 0;
-                progress.style.width = pct.toFixed(2) + "%";
+                var ratio = docH > 0 ? Math.min(1, Math.max(0, y / docH)) : 0;
+                scrollRing.style.strokeDashoffset = (RING_CIRC * (1 - ratio)).toFixed(2);
             }
 
             if (sections.length) {
@@ -903,8 +1176,14 @@
                 if (!activeId && sections.length && y + window.innerHeight >= document.documentElement.scrollHeight - 40) {
                     activeId = sections[sections.length - 1].id;
                 }
+                activeLink = null;
                 for (var j = 0; j < sections.length; j++) {
-                    sections[j].link.classList.toggle("active", sections[j].id === activeId);
+                    var isAct = sections[j].id === activeId;
+                    sections[j].link.classList.toggle("active", isAct);
+                    if (isAct) activeLink = sections[j].link;
+                }
+                if (!hoveredLink) {
+                    movePillTo(activeLink);
                 }
             }
         }
@@ -914,6 +1193,18 @@
                 ticking = true;
                 requestAnimationFrame(updateScrollState);
             }
+        }
+
+        onLangChangeHooks.push(function () {
+            requestAnimationFrame(function () {
+                movePillTo(hoveredLink || activeLink);
+            });
+        });
+
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(function () {
+                movePillTo(hoveredLink || activeLink);
+            });
         }
 
         window.addEventListener("scroll", requestUpdate, { passive: true });
@@ -927,11 +1218,18 @@
         grids.forEach(function (grid) {
             var items = grid.querySelectorAll(".reveal-3d");
             items.forEach(function (item, idx) {
-                item.style.setProperty("--reveal-delay", (idx * 65) + "ms");
+                item.style.setProperty("--reveal-delay", (idx * 45) + "ms");
             });
         });
 
-        var reveals = document.querySelectorAll(".reveal-3d");
+        var reveals = Array.prototype.slice.call(document.querySelectorAll(".reveal-3d"));
+
+        function revealElement(el, io) {
+            if (el.classList.contains("is-visible")) return;
+            el.classList.add("is-visible");
+            setTimeout(function () { el.classList.add("is-settled"); }, 760);
+            if (io) io.unobserve(el);
+        }
 
         if (reduced || !("IntersectionObserver" in window)) {
             reveals.forEach(function (el) {
@@ -941,74 +1239,108 @@
             var io = new IntersectionObserver(function (entries) {
                 entries.forEach(function (entry) {
                     if (entry.isIntersecting) {
-                        var el = entry.target;
-                        el.classList.add("is-visible");
-                        setTimeout(function () { el.classList.add("is-settled"); }, 960);
-                        io.unobserve(el);
+                        revealElement(entry.target, io);
                     }
                 });
-            }, { threshold: 0.1, rootMargin: "0px 0px -36px 0px" });
+            }, { threshold: 0.01, rootMargin: "0px 0px 80px 0px" });
 
             reveals.forEach(function (el) { io.observe(el); });
+
+            var revealTicking = false;
+            function sweepVisible() {
+                revealTicking = false;
+                var vh = window.innerHeight || document.documentElement.clientHeight || 800;
+                var remaining = 0;
+                for (var i = 0; i < reveals.length; i++) {
+                    var el = reveals[i];
+                    if (el.classList.contains("is-visible")) continue;
+                    var rect = el.getBoundingClientRect();
+                    if (rect.top < vh + 60 && rect.bottom > -40) {
+                        revealElement(el, io);
+                    } else {
+                        remaining++;
+                    }
+                }
+                if (remaining === 0) {
+                    window.removeEventListener("scroll", requestSweep);
+                    window.removeEventListener("hashchange", requestSweep);
+                }
+            }
+            function requestSweep() {
+                if (!revealTicking) {
+                    revealTicking = true;
+                    requestAnimationFrame(sweepVisible);
+                }
+            }
+            window.addEventListener("scroll", requestSweep, { passive: true });
+            window.addEventListener("hashchange", requestSweep, { passive: true });
+            sweepVisible();
         }
 
         if (reduced) return;
 
         var stage = document.getElementById("monolith-stage");
         var monolith = document.getElementById("monolith");
-        var mid = monolith ? monolith.querySelector(".mono-mid") : null;
         var shadow = document.getElementById("monolith-shadow");
+
+        var finePointer = !window.matchMedia || window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
         if (stage && monolith) {
             var targetX = 0, targetY = 0;
             var curX = 0, curY = 0;
             var hovered = false;
             var startAt = performance.now();
+            var monoRaf = 0;
 
-            stage.addEventListener("mousemove", function (e) {
-                var rect = stage.getBoundingClientRect();
-                var nx = (e.clientX - rect.left) / rect.width - 0.5;
-                var ny = (e.clientY - rect.top) / rect.height - 0.5;
-                hovered = true;
-                targetY = nx * 20;
-                targetX = -ny * 16;
-                if (mid) {
-                    var mRect = monolith.getBoundingClientRect();
-                    var px = ((e.clientX - mRect.left) / mRect.width) * 100;
-                    var py = ((e.clientY - mRect.top) / mRect.height) * 100;
-                    mid.style.setProperty("--mx", px.toFixed(1) + "%");
-                    mid.style.setProperty("--my", py.toFixed(1) + "%");
+            if (finePointer) {
+                stage.addEventListener("mousemove", function (e) {
+                    var rect = stage.getBoundingClientRect();
+                    var nx = (e.clientX - rect.left) / rect.width - 0.5;
+                    var ny = (e.clientY - rect.top) / rect.height - 0.5;
+                    hovered = true;
+                    targetY = nx * 14;
+                    targetX = -ny * 12;
+                });
+
+                stage.addEventListener("mouseleave", function () {
+                    hovered = false;
+                });
+            }
+
+            function tickMonolith(now) {
+                if (document.hidden) {
+                    monoRaf = 0;
+                    return;
                 }
-            });
-
-            stage.addEventListener("mouseleave", function () {
-                hovered = false;
-                if (mid) {
-                    mid.style.setProperty("--mx", "50%");
-                    mid.style.setProperty("--my", "30%");
-                }
-            });
-
-            (function tickMonolith(now) {
                 var tSec = (now - startAt) * 0.001;
                 if (!hovered) {
-                    targetY = Math.sin(tSec * 0.7) * 8.5;
-                    targetX = Math.cos(tSec * 0.55) * 5.2;
+                    targetY = Math.sin(tSec * 0.55) * 4.8;
+                    targetX = Math.cos(tSec * 0.45) * 3.2;
                 }
-                curX += (targetX - curX) * 0.08;
-                curY += (targetY - curY) * 0.08;
-                var floatY = Math.sin(tSec * 1.1) * 6.5;
+                curX += (targetX - curX) * 0.065;
+                curY += (targetY - curY) * 0.065;
+                var floatY = Math.sin(tSec * 0.95) * 5.5;
                 monolith.style.transform =
                     "translateY(" + floatY.toFixed(2) + "px) rotateX(" + curX.toFixed(2) + "deg) rotateY(" + curY.toFixed(2) + "deg)";
                 if (shadow) {
-                    var sScale = 1 - (floatY / 65);
-                    var sOp = 0.68 - (floatY / 42);
+                    var sScale = 1 - (floatY / 72);
+                    var sOp = 0.62 - (floatY / 48);
                     shadow.style.transform = "scaleX(" + sScale.toFixed(3) + ")";
-                    shadow.style.opacity = Math.max(0.35, Math.min(0.85, sOp)).toFixed(2);
+                    shadow.style.opacity = Math.max(0.32, Math.min(0.8, sOp)).toFixed(2);
                 }
-                requestAnimationFrame(tickMonolith);
-            })(performance.now());
+                monoRaf = requestAnimationFrame(tickMonolith);
+            }
+
+            document.addEventListener("visibilitychange", function () {
+                if (!document.hidden && !monoRaf) {
+                    monoRaf = requestAnimationFrame(tickMonolith);
+                }
+            });
+
+            monoRaf = requestAnimationFrame(tickMonolith);
         }
+
+        if (!finePointer) return;
 
         // Cross-border cursor spotlight illumination across card grids
         grids.forEach(function (grid) {
@@ -1041,7 +1373,7 @@
                 var ny = y / rect.height - 0.5;
                 card.style.setProperty("--mx", x.toFixed(0) + "px");
                 card.style.setProperty("--my", y.toFixed(0) + "px");
-                var maxTilt = card.classList.contains("proof-card") ? 1.4 : 4.2;
+                var maxTilt = (card.classList.contains("proof-card") || card.classList.contains("cta-card")) ? 1.4 : 4.2;
                 card.style.transform =
                     "perspective(960px) rotateX(" + (-ny * maxTilt).toFixed(2) + "deg) rotateY(" + (nx * maxTilt).toFixed(2) + "deg) translateY(-3px)";
             });
@@ -1052,6 +1384,73 @@
                 card.style.transform = "";
             });
         });
+    }
+
+    function initMagneticButtons() {
+        var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        var finePointer = !window.matchMedia || window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+        if (reduced || !finePointer) return;
+
+        var buttons = document.querySelectorAll(".magnetic-btn");
+        buttons.forEach(function (btn) {
+            btn.addEventListener("mousemove", function (e) {
+                var rect = btn.getBoundingClientRect();
+                var dx = (e.clientX - (rect.left + rect.width / 2)) * 0.14;
+                var dy = (e.clientY - (rect.top + rect.height / 2)) * 0.18;
+                var tx = Math.max(-4, Math.min(4, dx));
+                var ty = Math.max(-3.5, Math.min(3.5, dy));
+                btn.style.transform = "translate3d(" + tx.toFixed(2) + "px, " + (ty - 2).toFixed(2) + "px, 0)";
+            });
+            btn.addEventListener("mouseleave", function () {
+                btn.style.transform = "";
+            });
+        });
+    }
+
+    function initCounters() {
+        var nodes = document.querySelectorAll("[data-count-to]");
+        if (!nodes.length) return;
+        var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        function animateCount(el) {
+            var target = parseInt(el.getAttribute("data-count-to"), 10);
+            var suffix = el.getAttribute("data-count-suffix") || "";
+            if (isNaN(target)) return;
+            if (reduced) {
+                el.textContent = target + suffix;
+                return;
+            }
+            var duration = 1150;
+            var start = performance.now();
+            function step(now) {
+                var t = Math.min(1, (now - start) / duration);
+                var eased = 1 - Math.pow(1 - t, 3);
+                var val = Math.round(eased * target);
+                el.textContent = val + suffix;
+                if (t < 1) {
+                    requestAnimationFrame(step);
+                } else {
+                    el.textContent = target + suffix;
+                }
+            }
+            requestAnimationFrame(step);
+        }
+
+        if (reduced || !("IntersectionObserver" in window)) {
+            nodes.forEach(animateCount);
+            return;
+        }
+
+        var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    animateCount(entry.target);
+                    io.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.35 });
+
+        nodes.forEach(function (el) { io.observe(el); });
     }
 
     function initLiveMenu() {
@@ -1663,24 +2062,56 @@
         var mobileBtn = document.getElementById("mobile-toggle");
         var navMenu = document.getElementById("nav-menu");
         var navbar = document.getElementById("navbar");
+        var backdrop = document.getElementById("nav-backdrop");
+        var modal = document.getElementById("purchase-modal");
         if (!mobileBtn || !navMenu) return;
+
+        function setDrawer(open) {
+            navMenu.classList.toggle("open", open);
+            mobileBtn.setAttribute("aria-expanded", String(open));
+            if (backdrop) backdrop.classList.toggle("open", open);
+            if (open) {
+                document.body.style.overflow = "hidden";
+            } else if (!modal || !modal.classList.contains("open")) {
+                document.body.style.overflow = "";
+            }
+        }
 
         mobileBtn.addEventListener("click", function (e) {
             e.stopPropagation();
-            navMenu.classList.toggle("open");
+            setDrawer(!navMenu.classList.contains("open"));
         });
 
         navMenu.querySelectorAll("a").forEach(function (link) {
             link.addEventListener("click", function () {
-                navMenu.classList.remove("open");
+                setDrawer(false);
             });
         });
 
+        if (backdrop) {
+            backdrop.addEventListener("click", function () {
+                setDrawer(false);
+            });
+        }
+
         document.addEventListener("click", function (e) {
             if (navMenu.classList.contains("open") && navbar && !navbar.contains(e.target)) {
-                navMenu.classList.remove("open");
+                setDrawer(false);
             }
         });
+
+        document.addEventListener("keydown", function (e) {
+            if (e.key === "Escape" && navMenu.classList.contains("open")) {
+                setDrawer(false);
+                mobileBtn.focus();
+            }
+        });
+
+        window.addEventListener("resize", function () {
+            if (window.innerWidth > 860 && navMenu.classList.contains("open")) {
+                setDrawer(false);
+            }
+        }, { passive: true });
     }
 
     function initShowcasePlayer() {
