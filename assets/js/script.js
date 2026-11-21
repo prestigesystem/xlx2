@@ -280,7 +280,7 @@
             p1_f2: "7-day uninterrupted access",
             p1_f3_html: "<strong>Updates</strong> included",
             p1_f4: "Direct Discord support",
-            p1_btn: "Purchase — $4.99",
+            p1_btn: "Purchase — $5.99",
 
             p2_badge: "Most Popular",
             p2_name: "1 Month",
@@ -290,7 +290,7 @@
             p2_f2: "30-day uninterrupted access",
             p2_f3_html: "<strong>Updates</strong> included",
             p2_f4: "Free HWID reset",
-            p2_btn: "Purchase — $34.99",
+            p2_btn: "Purchase — $29.99",
 
             p4_badge: "Permanent",
             p4_name: "Lifetime",
@@ -300,7 +300,7 @@
             p4_f2: "Unlimited duration",
             p4_f3_html: "<strong>All updates</strong> included",
             p4_f4: "Free HWID reset",
-            p4_btn: "Purchase — $99",
+            p4_btn: "Purchase — $79",
 
             pay_strip_title: "Payment Methods",
             pay_pill_1: "Binance Gift Card",
@@ -652,7 +652,7 @@
             p1_f2: "7 gün kesintisiz kullanım",
             p1_f3_html: "<strong>Güncellemeler</strong> dahil",
             p1_f4: "Discord üzerinden destek",
-            p1_btn: "Satın Al — $4.99",
+            p1_btn: "Satın Al — $5.99",
 
             p2_badge: "En Çok Tercih Edilen",
             p2_name: "1 Aylık",
@@ -662,7 +662,7 @@
             p2_f2: "30 gün kesintisiz kullanım",
             p2_f3_html: "<strong>Güncellemeler</strong> dahil",
             p2_f4: "Ücretsiz HWID sıfırlama",
-            p2_btn: "Satın Al — $34.99",
+            p2_btn: "Satın Al — $29.99",
 
             p4_badge: "Kalıcı Erişim",
             p4_name: "Sınırsız",
@@ -672,7 +672,7 @@
             p4_f2: "Süre sınırı olmadan erişim",
             p4_f3_html: "<strong>Tüm güncellemeler</strong> dahil",
             p4_f4: "Ücretsiz HWID sıfırlama",
-            p4_btn: "Satın Al — $99",
+            p4_btn: "Satın Al — $79",
 
             pay_strip_title: "Ödeme Seçenekleri",
             pay_pill_1: "Binance Gift Card",
@@ -1569,7 +1569,7 @@
         var activePlanData = {
             planEn: "1 Month",
             planTr: "1 Aylık",
-            price: "34.99",
+            price: "29.99",
             updEn: "All updates included",
             updTr: "Tüm güncellemeler dahil"
         };
@@ -1602,7 +1602,7 @@
                 openModal({
                     planEn: btn.getAttribute("data-plan-en") || "1 Month",
                     planTr: btn.getAttribute("data-plan-tr") || "1 Aylık",
-                    price: btn.getAttribute("data-price") || "34.99",
+                    price: btn.getAttribute("data-price") || "29.99",
                     updEn: btn.getAttribute("data-updates-en") || "All updates included",
                     updTr: btn.getAttribute("data-updates-tr") || "Tüm güncellemeler dahil"
                 });
