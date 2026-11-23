@@ -269,9 +269,9 @@
             pm_rm_warn: "warning: this cannot be undone. the cheat and all related files will be permanently removed.",
 
             pm_preview_lbl: "preview",
-            pm_foot_menu: "menu",
-            pm_foot_esp: "esp toggle",
-            pm_foot_exit: "exit",
+            pm_theme_aria: "appearance mode",
+            pm_theme_dark: "dark mode",
+            pm_theme_light: "light mode",
 
             price_eyebrow: "Plans",
             price_title: "Choose the duration that fits your schedule.",
@@ -284,7 +284,7 @@
             p1_f2: "7-day uninterrupted access",
             p1_f3_html: "<strong>Updates</strong> included",
             p1_f4: "Direct Discord support",
-            p1_btn: "Purchase — $6.99",
+            p1_btn: "Purchase — $5.99",
 
             p2_badge: "Most Popular",
             p2_name: "1 Month",
@@ -369,6 +369,7 @@
                 friendDelTitle: "remove from list",
                 friendDelPrefix: "remove ",
                 friendDelSuffix: " from friends",
+                nearbyTitleSuffix: " add to friends",
                 pressKey: "press a key...",
                 toastSaved: "settings saved",
                 toastLoaded: "settings loaded",
@@ -380,6 +381,7 @@
                 toastFriendRemoved: "friend removed from list",
                 toastKeyDisallowed: "this key cannot be bound to the menu",
                 lifetime: "lifetime",
+                expired: "expired",
                 pmRmWorking: "deleting...",
                 pmRmToast: "preview mode — uninstall action triggered",
                 modalPlanPrefix: "Plan: ",
@@ -651,9 +653,9 @@
             pm_rm_warn: "dikkat: bu işlem geri alınamaz. hile ve ilişkili tüm kalıntılar kendisi dahil sistemden tamamen kaldırılacaktır.",
 
             pm_preview_lbl: "önizleme",
-            pm_foot_menu: "menü",
-            pm_foot_esp: "esp aç/kapat",
-            pm_foot_exit: "çıkış",
+            pm_theme_aria: "görünüm modu",
+            pm_theme_dark: "koyu mod",
+            pm_theme_light: "açık mod",
 
             price_eyebrow: "Paketler",
             price_title: "İhtiyacınıza uygun süreyi seçin.",
@@ -666,7 +668,7 @@
             p1_f2: "7 gün kesintisiz kullanım",
             p1_f3_html: "<strong>Güncellemeler</strong> dahil",
             p1_f4: "Discord üzerinden destek",
-            p1_btn: "Satın Al — $6.99",
+            p1_btn: "Satın Al — $5.99",
 
             p2_badge: "En Çok Tercih Edilen",
             p2_name: "1 Aylık",
@@ -751,6 +753,7 @@
                 friendDelTitle: "listeden kaldır",
                 friendDelPrefix: "",
                 friendDelSuffix: " arkadaşını kaldır",
+                nearbyTitleSuffix: " arkadaş olarak ekle",
                 pressKey: "tuşa basın...",
                 toastSaved: "ayarlar kaydedildi",
                 toastLoaded: "ayarlar yüklendi",
@@ -762,6 +765,7 @@
                 toastFriendRemoved: "arkadaş listeden kaldırıldı",
                 toastKeyDisallowed: "bu tuş menü için kullanılamaz",
                 lifetime: "lifetime",
+                expired: "süresi doldu",
                 pmRmWorking: "siliniyor...",
                 pmRmToast: "önizleme modu — kaldırma işlemi tetiklendi",
                 modalPlanPrefix: "Paket: ",
@@ -1250,6 +1254,15 @@
             function sweepVisible() {
                 revealTicking = false;
                 var vh = window.innerHeight || document.documentElement.clientHeight || 800;
+                if (window.location.hash && window.location.hash.length > 1) {
+                    var hashTarget = document.getElementById(window.location.hash.slice(1));
+                    if (hashTarget) {
+                        var hashReveals = hashTarget.querySelectorAll(".reveal-3d");
+                        for (var hi = 0; hi < hashReveals.length; hi++) {
+                            revealElement(hashReveals[hi], io);
+                        }
+                    }
+                }
                 var remaining = 0;
                 for (var i = 0; i < reveals.length; i++) {
                     var el = reveals[i];
@@ -1581,7 +1594,41 @@
         }
 
         var friendList = [];
+        var nearbyPlayers = ["radeon", "maverick", "nyx", "zenith"];
         var lastFriendsKey = "";
+        var lastNearbyKey = "";
+
+        function renderNearby(force) {
+            var wrap = $("pm-nearby-wrap");
+            var box = $("pm-nearby-list");
+            if (!wrap || !box) return;
+            var lowerSet = {};
+            for (var fi = 0; fi < friendList.length; fi++) {
+                lowerSet[friendList[fi].toLowerCase()] = true;
+            }
+            var candidates = nearbyPlayers.filter(function (n) {
+                return n && !lowerSet[n.toLowerCase()];
+            });
+            var key = currentLang + "::" + JSON.stringify(candidates);
+            if (!force && key === lastNearbyKey) return;
+            lastNearbyKey = key;
+            box.textContent = "";
+            wrap.hidden = candidates.length === 0;
+            for (var ni = 0; ni < candidates.length; ni++) {
+                (function (name) {
+                    var lowName = langLower(name);
+                    var btn = document.createElement("button");
+                    btn.type = "button";
+                    btn.className = "ntag";
+                    btn.textContent = "+ " + lowName;
+                    btn.title = lowName + td("nearbyTitleSuffix");
+                    btn.addEventListener("click", function () {
+                        submitFriend(name);
+                    });
+                    box.appendChild(btn);
+                })(candidates[ni]);
+            }
+        }
 
         function renderFriends(force) {
             var key = currentLang + "::" + JSON.stringify(friendList);
@@ -1594,6 +1641,7 @@
                 empty.className = "fempty";
                 empty.textContent = td("friendEmpty");
                 box.appendChild(empty);
+                renderNearby(force);
                 return;
             }
             for (var f = 0; f < friendList.length; f++) {
@@ -1612,12 +1660,14 @@
                     del.addEventListener("click", function () {
                         friendList = friendList.filter(function (x) { return x !== name; });
                         renderFriends(true);
+                        renderNearby(true);
                         toast(td("toastFriendRemoved"));
                     });
                     tag.append(dot, txt, del);
                     box.appendChild(tag);
                 })(friendList[f]);
             }
+            renderNearby(force);
         }
 
         function submitFriend(name) {
@@ -1636,6 +1686,7 @@
             }
             friendList.push(clean);
             renderFriends(true);
+            renderNearby(true);
             $("pm-friend-input").value = "";
             toast(td("toastFriendAdded"));
         }
@@ -1822,6 +1873,30 @@
             }
         });
 
+        var THEME_STORAGE_KEY = "ps_menu_theme";
+        var themeBtns = all("#pm-theme-switch [data-pm-theme]");
+        function applyMenuTheme(mode, persist) {
+            var next = mode === "light" ? "light" : "dark";
+            app.dataset.theme = next;
+            for (var tb = 0; tb < themeBtns.length; tb++) {
+                themeBtns[tb].setAttribute("aria-pressed", String(themeBtns[tb].getAttribute("data-pm-theme") === next));
+            }
+            if (persist) {
+                try { localStorage.setItem(THEME_STORAGE_KEY, next); } catch (e) { /* ignore */ }
+            }
+        }
+        for (var tb2 = 0; tb2 < themeBtns.length; tb2++) {
+            (function (btn) {
+                btn.addEventListener("click", function () {
+                    applyMenuTheme(btn.getAttribute("data-pm-theme"), true);
+                });
+            })(themeBtns[tb2]);
+        }
+        try {
+            var savedMenuTheme = localStorage.getItem(THEME_STORAGE_KEY);
+            if (savedMenuTheme === "light" || savedMenuTheme === "dark") applyMenuTheme(savedMenuTheme, false);
+        } catch (e) { /* ignore */ }
+
         var introTimers = [];
         function clearIntroTimers() {
             for (var timerIdx = 0; timerIdx < introTimers.length; timerIdx++) clearTimeout(introTimers[timerIdx]);
@@ -1846,18 +1921,18 @@
                         el.classList.add("play");
                     });
                 });
-            }, 70));
+            }, 80));
 
             introTimers.push(setTimeout(function () {
                 el.classList.add("leaving");
                 app.classList.remove("intro-hold");
                 app.classList.add("intro-reveal");
-            }, 1500));
+            }, 1820));
 
             introTimers.push(setTimeout(function () {
                 el.hidden = true;
                 app.classList.remove("intro-reveal");
-            }, 2420));
+            }, 2680));
         }
 
         var closedOverlay = $("pm-closed-overlay");
@@ -1884,21 +1959,65 @@
             });
         }
 
-        function renderLicBadge() {
+        var licClock = {
+            synced: true,
+            active: true,
+            lifetime: false,
+            baseSec: 6 * 86400 + 23 * 3600 + 59 * 60 + 48,
+            syncAt: performance.now(),
+            lastRendered: ""
+        };
+        function pad2(n) { return n < 10 ? "0" + n : String(n); }
+
+        function renderLicTimer() {
             var wrap = $("pm-lic-live");
+            var segD = $("pm-lic-seg-d"), segH = $("pm-lic-seg-h"), segM = $("pm-lic-seg-m"), segS = $("pm-lic-seg-s");
             var badge = $("pm-lic-rem");
-            var segIds = ["pm-lic-seg-d", "pm-lic-seg-h", "pm-lic-seg-m", "pm-lic-seg-s"];
-            for (var si = 0; si < segIds.length; si++) {
-                var seg = $(segIds[si]);
-                if (seg) seg.hidden = true;
-            }
-            if (wrap) wrap.dataset.state = "ok";
-            if (badge) {
+            if (!wrap || !badge || !segD || !segH || !segM || !segS) return;
+            if (!licClock.synced || !licClock.active) return;
+
+            if (licClock.lifetime) {
+                if (licClock.lastRendered === "life:" + currentLang) return;
+                licClock.lastRendered = "life:" + currentLang;
+                wrap.dataset.state = "ok";
+                segD.hidden = segH.hidden = segM.hidden = segS.hidden = true;
                 badge.hidden = false;
                 badge.textContent = td("lifetime");
+                return;
             }
+
+            var elapsed = Math.floor(Math.max(0, performance.now() - licClock.syncAt) / 1000);
+            var rem = Math.max(0, licClock.baseSec - elapsed);
+            var key = currentLang + ":t:" + rem;
+            if (licClock.lastRendered === key) return;
+            licClock.lastRendered = key;
+
+            if (rem === 0) {
+                wrap.dataset.state = "bad";
+                segD.hidden = segH.hidden = segM.hidden = segS.hidden = true;
+                badge.hidden = false;
+                badge.textContent = td("expired");
+                return;
+            }
+
+            var d = Math.floor(rem / 86400);
+            var h = Math.floor((rem % 86400) / 3600);
+            var m = Math.floor((rem % 3600) / 60);
+            var s = rem % 60;
+
+            wrap.dataset.state = rem < 3600 ? "warn" : "ok";
+            badge.hidden = true;
+            segD.hidden = d === 0;
+            segH.hidden = false;
+            segM.hidden = false;
+            segS.hidden = false;
+            $("pm-lic-d").textContent = pad2(d);
+            $("pm-lic-h").textContent = pad2(h);
+            $("pm-lic-m").textContent = pad2(m);
+            $("pm-lic-s").textContent = pad2(s);
         }
-        renderLicBadge();
+        renderLicTimer();
+        setInterval(renderLicTimer, 250);
 
         var rmTrigger = $("pm-rm-trigger");
         var rmBox = $("pm-rm-confirm-box");
@@ -1942,13 +2061,17 @@
             updateLosPreview();
             paintKey();
             renderFriends(true);
+            renderNearby(true);
             paintLiveStatus();
-            renderLicBadge();
+            licClock.lastRendered = "";
+            renderLicTimer();
             if (rmConfirm && !rmConfirm.disabled) {
                 rmConfirm.textContent = t("pm_rm_confirm");
             }
         });
 
+        renderFriends(true);
+        renderNearby(true);
         paintKey();
         paintLiveStatus();
     }
