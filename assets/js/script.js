@@ -284,7 +284,7 @@
             p1_f2: "7-day uninterrupted access",
             p1_f3_html: "<strong>Updates</strong> included",
             p1_f4: "Direct Discord support",
-            p1_btn: "Purchase — $5.99",
+            p1_btn: "Purchase — $7.99",
 
             p2_badge: "Most Popular",
             p2_name: "1 Month",
@@ -668,7 +668,7 @@
             p1_f2: "7 gün kesintisiz kullanım",
             p1_f3_html: "<strong>Güncellemeler</strong> dahil",
             p1_f4: "Discord üzerinden destek",
-            p1_btn: "Satın Al — $5.99",
+            p1_btn: "Satın Al — $7.99",
 
             p2_badge: "En Çok Tercih Edilen",
             p2_name: "1 Aylık",
