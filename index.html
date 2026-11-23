@@ -66,7 +66,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap&subset=latin-ext" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css?v=3">
     <noscript><style>#site-preloader{display:none!important;}.navbar,.hero-stagger{opacity:1!important;transform:none!important;filter:none!important;}</style></noscript>
 
     <script type="application/ld+json">
@@ -90,11 +90,11 @@
           "offers": {
             "@type": "AggregateOffer",
             "priceCurrency": "USD",
-            "lowPrice": "6.99",
+            "lowPrice": "5.99",
             "highPrice": "79",
             "offerCount": "3",
             "offers": [
-              { "@type": "Offer", "name": "1 Week License", "price": "6.99", "priceCurrency": "USD" },
+              { "@type": "Offer", "name": "1 Week License", "price": "5.99", "priceCurrency": "USD" },
               { "@type": "Offer", "name": "1 Month License", "price": "29.99", "priceCurrency": "USD" },
               { "@type": "Offer", "name": "Lifetime License", "price": "79", "priceCurrency": "USD" }
             ]
@@ -537,54 +537,64 @@
                             <button type="button" class="btn-solid btn-sm" id="pm-reopen-btn" data-i18n="prev_reopen_btn">Reopen Menu (F1)</button>
                         </div>
 
-                    <div id="pm-app">
+                    <div id="pm-app" data-theme="dark">
                         <header id="pm-head">
-                            <div class="brand">
-                                <svg viewBox="0 0 48 48" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M24 2 44 13v22L24 46 4 35V13L24 2Z" fill="#050508" stroke="#ffffff" stroke-width="2"/>
-                                    <g transform="translate(24 24) skewX(-12) translate(-24 -24)">
-                                        <path d="M17 13 h8.6 c5.4 0 8.7 3.2 8.7 8.3 c0 5.8 -4 9.5 -9.9 9.5 h-3.5 l-1.6 9.2 h-5.4 z M22.8 17.8 l-1.6 8.9 h3 c3 0 4.8 -1.8 4.8 -4.8 c0 -2.5 -1.6 -4.1 -4.2 -4.1 z" fill="#ffffff"/>
-                                    </g>
-                                </svg>
-                                <div><b>prestige <i>bypass</i></b><span>developed by liar</span></div>
+                            <div class="head-top">
+                                <div class="head-left">
+                                    <span class="head-tag">prestige</span>
+                                    <span class="head-sep" aria-hidden="true"></span>
+                                    <span class="pill" id="pm-pill" data-live="0" role="button" tabindex="0" title="toggle live status preview" data-i18n-title="pm_pill_title"><i aria-hidden="true"></i><em>waiting for game</em></span>
+                                </div>
+                                <div class="hact">
+                                    <button class="btn" id="pm-save" type="button" data-i18n="pm_save">save</button>
+                                    <button class="btn" id="pm-load" type="button" data-i18n="pm_load">load</button>
+                                    <button class="btn icon" id="pm-close" type="button" aria-label="close menu" title="close (esc)" data-i18n-aria="pm_close_aria" data-i18n-title="pm_close_title">&times;</button>
+                                </div>
                             </div>
-                            <div class="spacer"></div>
-                            <span class="pill" id="pm-pill" data-live="0" role="button" tabindex="0" title="toggle live status preview" data-i18n-title="pm_pill_title"><i aria-hidden="true"></i><em>waiting for game</em></span>
-                            <div class="hact">
-                                <button class="btn" id="pm-save" type="button" data-i18n="pm_save">save</button>
-                                <button class="btn" id="pm-load" type="button" data-i18n="pm_load">load</button>
-                                <button class="btn icon" id="pm-close" type="button" aria-label="close menu" title="close (esc)" data-i18n-aria="pm_close_aria" data-i18n-title="pm_close_title">&times;</button>
-                            </div>
+
+                            <nav id="pm-rail" role="tablist" aria-label="menu tabs">
+                                <div class="nav-side nav-left">
+                                    <button type="button" role="tab" data-tab="pm-esp" aria-selected="true" aria-controls="pm-esp" tabindex="0">
+                                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1.8 8s2.3-4.2 6.2-4.2S14.2 8 14.2 8s-2.3 4.2-6.2 4.2S1.8 8 1.8 8Z"/><circle cx="8" cy="8" r="2"/></svg>
+                                        <span data-i18n="pm_tab_esp">esp</span>
+                                    </button>
+                                    <button type="button" role="tab" data-tab="pm-ganimet" aria-selected="false" aria-controls="pm-ganimet" tabindex="-1">
+                                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 2.5h7l2.5 3.6L8 13.5 2 6.1l2.5-3.6Z"/><path d="M2 6.1h12M6 2.5 8 13.5 10 2.5" opacity=".55"/></svg>
+                                        <span data-i18n="pm_tab_loot">items &amp; loot</span>
+                                    </button>
+                                    <button type="button" role="tab" data-tab="pm-nisan" aria-selected="false" aria-controls="pm-nisan" tabindex="-1">
+                                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="8" r="5.2"/><circle cx="8" cy="8" r="1.4" fill="currentColor" stroke="none"/><path d="M8 1.2v2.2M8 12.6v2.2M1.2 8h2.2M12.6 8h2.2"/></svg>
+                                        <span data-i18n="pm_tab_aim">aimbot</span>
+                                    </button>
+                                </div>
+
+                                <div class="nav-center-logo" aria-hidden="true">
+                                    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M24 2 44 13v22L24 46 4 35V13L24 2Z" fill="#06070c" stroke="#ffffff" stroke-width="2"/>
+                                        <g transform="translate(24 24) skewX(-12) translate(-24 -24)">
+                                            <path d="M17 13 h8.6 c5.4 0 8.7 3.2 8.7 8.3 c0 5.8 -4 9.5 -9.9 9.5 h-3.5 l-1.6 9.2 h-5.4 z M22.8 17.8 l-1.6 8.9 h3 c3 0 4.8 -1.8 4.8 -4.8 c0 -2.5 -1.6 -4.1 -4.2 -4.1 z" fill="#ffffff"/>
+                                        </g>
+                                    </svg>
+                                </div>
+
+                                <div class="nav-side nav-right">
+                                    <button type="button" role="tab" data-tab="pm-radar" aria-selected="false" aria-controls="pm-radar" tabindex="-1">
+                                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M8 5.2a2.8 2.8 0 1 0 2.8 2.8" opacity=".55"/><path d="M8 8l3.9-3.9"/><circle cx="8" cy="8" r="1" fill="currentColor" stroke="none"/></svg>
+                                        <span data-i18n="pm_tab_radar">radar</span>
+                                    </button>
+                                    <button type="button" role="tab" data-tab="pm-renkler" aria-selected="false" aria-controls="pm-renkler" tabindex="-1">
+                                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2a6 6 0 1 0 0 12c.9 0 1.4-.6 1.4-1.3 0-.4-.2-.7-.2-1.1 0-.7.5-1.1 1.3-1.1H12a2 2 0 0 0 2-2C14 5.1 11.3 2 8 2Z"/><circle cx="5.2" cy="6.8" r=".8" fill="currentColor" stroke="none"/><circle cx="7.9" cy="4.8" r=".8" fill="currentColor" stroke="none"/><circle cx="10.8" cy="6.8" r=".8" fill="currentColor" stroke="none"/><circle cx="5.6" cy="10" r=".8" fill="currentColor" stroke="none"/></svg>
+                                        <span data-i18n="pm_tab_colors">colors</span>
+                                    </button>
+                                    <button type="button" role="tab" data-tab="pm-ayarlar" aria-selected="false" aria-controls="pm-ayarlar" tabindex="-1">
+                                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="2.1"/><path d="M13.2 8a5.2 5.2 0 0 0-.1-.9l1.3-1-1.3-2.2-1.5.6a5.2 5.2 0 0 0-1.6-.9l-.2-1.6H7.2l-.2 1.6a5.2 5.2 0 0 0-1.6.9l-1.5-.6-1.3 2.2 1.3 1a5.2 5.2 0 0 0 0 1.8l-1.3 1 1.3 2.2 1.5-.6c.5.4 1 .7 1.6.9l.2 1.6h2.6l.2-1.6c.6-.2 1.1-.5 1.6-.9l1.5.6 1.3-2.2-1.3-1c.1-.3.1-.6.1-.9Z"/></svg>
+                                        <span data-i18n="pm_tab_settings">settings</span>
+                                    </button>
+                                </div>
+                            </nav>
                         </header>
 
                         <div class="body">
-                            <nav id="pm-rail" role="tablist" aria-label="menu tabs">
-                                <button type="button" role="tab" data-tab="pm-esp" aria-selected="true" aria-controls="pm-esp" tabindex="0">
-                                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1.8 8s2.3-4.2 6.2-4.2S14.2 8 14.2 8s-2.3 4.2-6.2 4.2S1.8 8 1.8 8Z"/><circle cx="8" cy="8" r="2"/></svg>
-                                    <span data-i18n="pm_tab_esp">esp</span>
-                                </button>
-                                <button type="button" role="tab" data-tab="pm-ganimet" aria-selected="false" aria-controls="pm-ganimet" tabindex="-1">
-                                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 2.5h7l2.5 3.6L8 13.5 2 6.1l2.5-3.6Z"/><path d="M2 6.1h12M6 2.5 8 13.5 10 2.5" opacity=".55"/></svg>
-                                    <span data-i18n="pm_tab_loot">items &amp; loot</span>
-                                </button>
-                                <button type="button" role="tab" data-tab="pm-nisan" aria-selected="false" aria-controls="pm-nisan" tabindex="-1">
-                                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="8" r="5.2"/><circle cx="8" cy="8" r="1.4" fill="currentColor" stroke="none"/><path d="M8 1.2v2.2M8 12.6v2.2M1.2 8h2.2M12.6 8h2.2"/></svg>
-                                    <span data-i18n="pm_tab_aim">aimbot</span>
-                                </button>
-                                <button type="button" role="tab" data-tab="pm-radar" aria-selected="false" aria-controls="pm-radar" tabindex="-1">
-                                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M8 5.2a2.8 2.8 0 1 0 2.8 2.8" opacity=".55"/><path d="M8 8l3.9-3.9"/><circle cx="8" cy="8" r="1" fill="currentColor" stroke="none"/></svg>
-                                    <span data-i18n="pm_tab_radar">radar</span>
-                                </button>
-                                <button type="button" role="tab" data-tab="pm-renkler" aria-selected="false" aria-controls="pm-renkler" tabindex="-1">
-                                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2a6 6 0 1 0 0 12c.9 0 1.4-.6 1.4-1.3 0-.4-.2-.7-.2-1.1 0-.7.5-1.1 1.3-1.1H12a2 2 0 0 0 2-2C14 5.1 11.3 2 8 2Z"/><circle cx="5.2" cy="6.8" r=".8" fill="currentColor" stroke="none"/><circle cx="7.9" cy="4.8" r=".8" fill="currentColor" stroke="none"/><circle cx="10.8" cy="6.8" r=".8" fill="currentColor" stroke="none"/><circle cx="5.6" cy="10" r=".8" fill="currentColor" stroke="none"/></svg>
-                                    <span data-i18n="pm_tab_colors">colors</span>
-                                </button>
-                                <button type="button" role="tab" data-tab="pm-ayarlar" aria-selected="false" aria-controls="pm-ayarlar" tabindex="-1">
-                                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="2.1"/><path d="M13.2 8a5.2 5.2 0 0 0-.1-.9l1.3-1-1.3-2.2-1.5.6a5.2 5.2 0 0 0-1.6-.9l-.2-1.6H7.2l-.2 1.6a5.2 5.2 0 0 0-1.6.9l-1.5-.6-1.3 2.2 1.3 1a5.2 5.2 0 0 0 0 1.8l-1.3 1 1.3 2.2 1.5-.6c.5.4 1 .7 1.6.9l.2 1.6h2.6l.2-1.6c.6-.2 1.1-.5 1.6-.9l1.5.6 1.3-2.2-1.3-1c.1-.3.1-.6.1-.9Z"/></svg>
-                                    <span data-i18n="pm_tab_settings">settings</span>
-                                </button>
-                            </nav>
-
                             <main id="pm-pages">
                                 <section id="pm-esp" role="tabpanel" aria-label="esp">
                                     <div class="phead">
@@ -684,13 +694,13 @@
                                         <article class="card">
                                             <h2 data-i18n="pm_loot_rarity_h">rarity filter</h2>
                                             <div class="chips">
-                                                <label class="chip"><input type="checkbox" data-m="m34" checked><span data-i18n="pm_m34">none</span></label>
-                                                <label class="chip"><input type="checkbox" data-m="m35" checked><span data-i18n="pm_m35">common</span></label>
-                                                <label class="chip"><input type="checkbox" data-m="m36" checked><span data-i18n="pm_m36">uncommon</span></label>
-                                                <label class="chip"><input type="checkbox" data-m="m37" checked><span data-i18n="pm_m37">rare</span></label>
-                                                <label class="chip"><input type="checkbox" data-m="m38" checked><span data-i18n="pm_m38">epic</span></label>
-                                                <label class="chip"><input type="checkbox" data-m="m39" checked><span data-i18n="pm_m39">legendary</span></label>
-                                                <label class="chip"><input type="checkbox" data-m="m40" checked><span data-i18n="pm_m40">exotic</span></label>
+                                                <label class="chip" style="--rc:#94a3b8"><input type="checkbox" data-m="m34" checked><span data-i18n="pm_m34">none</span></label>
+                                                <label class="chip" style="--rc:#cbd5e1"><input type="checkbox" data-m="m35" checked><span data-i18n="pm_m35">common</span></label>
+                                                <label class="chip" style="--rc:#4ade80"><input type="checkbox" data-m="m36" checked><span data-i18n="pm_m36">uncommon</span></label>
+                                                <label class="chip" style="--rc:#60a5fa"><input type="checkbox" data-m="m37" checked><span data-i18n="pm_m37">rare</span></label>
+                                                <label class="chip" style="--rc:#c084fc"><input type="checkbox" data-m="m38" checked><span data-i18n="pm_m38">epic</span></label>
+                                                <label class="chip" style="--rc:#fbbf24"><input type="checkbox" data-m="m39" checked><span data-i18n="pm_m39">legendary</span></label>
+                                                <label class="chip" style="--rc:#fb7185"><input type="checkbox" data-m="m40" checked><span data-i18n="pm_m40">exotic</span></label>
                                             </div>
                                             <p data-i18n="pm_loot_note">disabled tiers are hidden for both ground items and loot nodes.</p>
                                         </article>
@@ -901,22 +911,22 @@
                                         <article class="card full danger-card">
                                             <h2 data-i18n="pm_set_danger_h" style="color:var(--bad)">uninstall &amp; cleanup</h2>
                                             <div class="rows">
-                                                <div class="row danger-row" style="cursor:default;flex-wrap:wrap;gap:12px;padding:6px 0;">
+                                                <div class="row danger-row" style="cursor:default;flex-wrap:wrap;gap:12px;padding:8px;">
                                                     <span style="flex:1;min-width:220px">
-                                                        <span data-i18n="pm_rm_title" style="color:var(--bad);font-weight:600;font-size:13px">completely remove</span>
+                                                        <span data-i18n="pm_rm_title" style="color:var(--bad);font-weight:600;font-size:13.25px">completely remove</span>
                                                         <small data-i18n="pm_rm_desc">permanently deletes cheat, settings, logs, caches and all files</small>
                                                     </span>
                                                     <div class="pm-rm-actions" style="display:flex;align-items:center;gap:8px;">
                                                         <button type="button" class="btn danger" id="pm-rm-trigger" data-i18n="pm_rm_btn">completely remove</button>
                                                         <div id="pm-rm-confirm-box" class="pm-confirm-box" style="display:none;align-items:center;gap:8px;flex-wrap:wrap;">
-                                                            <span data-i18n="pm_rm_prompt" style="font-size:11.5px;color:#fca5a5;font-weight:500">all files will be deleted, are you sure?</span>
+                                                            <span data-i18n="pm_rm_prompt" style="font-size:11.5px;color:var(--bad);font-weight:500">all files will be deleted, are you sure?</span>
                                                             <button type="button" class="btn danger confirm" id="pm-rm-confirm" data-i18n="pm_rm_confirm">yes, delete all</button>
                                                             <button type="button" class="btn cancel" id="pm-rm-cancel" data-i18n="pm_rm_cancel">cancel</button>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <p data-i18n="pm_rm_warn" style="color:#ef444499;font-size:11px">warning: this cannot be undone. the cheat and all related files will be permanently removed.</p>
+                                            <p data-i18n="pm_rm_warn" style="color:var(--danger-note);font-size:11.5px">warning: this cannot be undone. the cheat and all related files will be permanently removed.</p>
                                         </article>
                                     </div>
                                 </section>
@@ -924,22 +934,43 @@
                         </div>
 
                         <footer>
-                            <span class="dot" id="pm-fdot" aria-hidden="true"></span>
-                            <span id="pm-game">waiting for game...</span>
-                            <span id="pm-preview" data-i18n="pm_preview_lbl">preview</span>
-                            <span class="keys">
-                                <span><b id="pm-fkey-menu">f1</b> <em style="font-style:normal" data-i18n="pm_foot_menu">menu</em></span>
-                                <span><b>insert</b> <em style="font-style:normal" data-i18n="pm_foot_esp">esp toggle</em></span>
-                                <span><b>end</b> <em style="font-style:normal" data-i18n="pm_foot_exit">exit</em></span>
-                            </span>
+                            <div class="foot-left">
+                                <span class="dot" id="pm-fdot" aria-hidden="true"></span>
+                                <span id="pm-game">waiting for game...</span>
+                                <span id="pm-preview" data-i18n="pm_preview_lbl">preview</span>
+                            </div>
+
+                            <div class="theme-switch" id="pm-theme-switch" role="group" aria-label="appearance mode" data-i18n-aria="pm_theme_aria">
+                                <span class="theme-thumb" aria-hidden="true"></span>
+                                <button type="button" class="theme-btn" data-pm-theme="dark" aria-pressed="true" title="dark mode" data-i18n-title="pm_theme_dark">
+                                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.2 9.6A5.6 5.6 0 0 1 6.4 2.8a5.6 5.6 0 1 0 6.8 6.8Z"/></svg>
+                                </button>
+                                <button type="button" class="theme-btn" data-pm-theme="light" aria-pressed="false" title="light mode" data-i18n-title="pm_theme_light">
+                                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="2.8"/><path d="M8 1.8v1.5M8 12.7v1.5M1.8 8h1.5M12.7 8h1.5M3.6 3.6l1.1 1.1M11.3 11.3l1.1 1.1M12.4 3.6l-1.1 1.1M4.7 11.3l-1.1 1.1"/></svg>
+                                </button>
+                            </div>
+
+                            <span class="foot-credit">developed by <b>liar</b></span>
                         </footer>
 
                         <div id="pm-toast" role="status" aria-live="polite"></div>
 
                         <div id="pm-intro" aria-hidden="true" hidden>
+                            <div class="intro-halo" aria-hidden="true"></div>
                             <div class="intro-inner">
+                                <div class="intro-emblem-wrap" aria-hidden="true">
+                                    <span class="intro-pulse"></span>
+                                    <span class="intro-orbit"></span>
+                                    <svg class="intro-hex" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M24 2 44 13v22L24 46 4 35V13L24 2Z" fill="#06070c" stroke="#ffffff" stroke-width="1.8"/>
+                                        <g transform="translate(24 24) skewX(-12) translate(-24 -24)">
+                                            <path d="M17 13 h8.6 c5.4 0 8.7 3.2 8.7 8.3 c0 5.8 -4 9.5 -9.9 9.5 h-3.5 l-1.6 9.2 h-5.4 z M22.8 17.8 l-1.6 8.9 h3 c3 0 4.8 -1.8 4.8 -4.8 c0 -2.5 -1.6 -4.1 -4.2 -4.1 z" fill="#ffffff"/>
+                                        </g>
+                                    </svg>
+                                </div>
                                 <div class="intro-text"><span class="intro-hi">welcome</span><span class="intro-comma">, </span><span class="intro-name" id="pm-intro-name">liar</span></div>
                                 <div class="intro-line"></div>
+                                <div class="intro-sub">prestige external</div>
                             </div>
                         </div>
                     </div>
@@ -966,7 +997,7 @@
 
                         <div class="plan-price">
                             <span class="currency">$</span>
-                            <span class="amount">6<small class="cents">.99</small></span>
+                            <span class="amount">5<small class="cents">.99</small></span>
                             <span class="period" data-i18n="p1_period">/ 7 days</span>
                         </div>
 
@@ -980,7 +1011,7 @@
                             <li class="plan-gift tr-only"><span class="check-well gift-well" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.2" y="6.2" width="11.6" height="2.6" rx=".7"/><path d="M3.4 8.8v4.4a1 1 0 0 0 1 1h7.2a1 1 0 0 0 1-1V8.8M8 6.2v8M8 6.2H5.6a1.4 1.4 0 1 1 0-2.8C7.2 3.4 8 6.2 8 6.2Zm0 0h2.4a1.4 1.4 0 1 0 0-2.8C8.8 3.4 8 6.2 8 6.2Z"/></svg></span><span><strong>Türkçe yama</strong> hediyesi</span></li>
                         </ul>
 
-                        <button type="button" class="btn-ghost btn-block buy-btn" data-plan-en="1 Week" data-plan-tr="1 Haftalık" data-price="6.99" data-updates-en="All updates included" data-updates-tr="Tüm güncellemeler dahil" data-i18n="p1_btn">Purchase — $6.99</button>
+                        <button type="button" class="btn-ghost btn-block buy-btn" data-plan-en="1 Week" data-plan-tr="1 Haftalık" data-price="5.99" data-updates-en="All updates included" data-updates-tr="Tüm güncellemeler dahil" data-i18n="p1_btn">Purchase — $5.99</button>
                     </article>
 
                     <article class="pricing-card featured tilt-card reveal-3d">
@@ -1273,6 +1304,6 @@
         </div>
     </div>
 
-    <script src="assets/js/script.js"></script>
+    <script src="assets/js/script.js?v=3"></script>
 </body>
 </html>
