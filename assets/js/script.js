@@ -316,16 +316,16 @@
             faq_q1: "Are there any feature differences between plans?",
             faq_a1: "No. Every plan unlocks the complete feature suite and all updates without limits. Plans differ strictly by access duration and HWID reset eligibility.",
             faq_q2: "How do I purchase and receive my license?",
-            faq_a2: "After selecting your plan, open a ticket in our Discord server at discord.gg/prstg. Once your payment via Binance Gift Card, card, or transfer is confirmed, your key and loader are delivered directly.",
+            faq_a2: "After selecting your plan, open a ticket in our Discord server at discord.gg/prestigesystem. Once your payment via Binance Gift Card, card, or transfer is confirmed, your key and loader are delivered directly.",
             faq_q3: "Which Windows versions are supported?",
             faq_a3: "Runs smoothly on modern Windows 10 and Windows 11 (64-bit) builds.",
             faq_q4: "What happens if I change or upgrade my PC?",
-            faq_a4: "1 Month and Lifetime license holders can request a free HWID reset by opening a support ticket at discord.gg/prstg.",
+            faq_a4: "1 Month and Lifetime license holders can request a free HWID reset by opening a support ticket at discord.gg/prestigesystem.",
 
             cta_eyebrow: "Get Started",
             cta_title: "Ready when you are.",
             cta_desc: "Instant license delivery, regular updates, and direct support through our Discord community.",
-            cta_btn_dc: "Join discord.gg/prstg",
+            cta_btn_dc: "Join discord.gg/prestigesystem",
             cta_btn_plans: "Compare Plans",
 
             foot_features: "Features",
@@ -353,7 +353,7 @@
             mod_ca_lbl_rate: "Exchange Rate",
             mod_ca_val_rate: "Calculated at live market rate",
             mod_cancel: "Close",
-            mod_go_dc: "Open discord.gg/prstg",
+            mod_go_dc: "Open discord.gg/prestigesystem",
 
             dyn: {
                 docTitle: "Prestige External RobRun Cheat — Precision External Suite | Prestige System",
@@ -700,16 +700,16 @@
             faq_q1: "Paketler arasında özellik farkı var mı?",
             faq_a1: "Hayır. Tüm paketlerde yazılımın bütün özellikleri ve güncellemeler eksiksiz olarak sunulur. Paketler yalnızca kullanım süresi ve HWID sıfırlama hakkına göre ayrılır.",
             faq_q2: "Nasıl satın alabilirim ve teslimat nasıl yapılır?",
-            faq_a2: "İstediğiniz paketi seçtikten sonra discord.gg/prstg üzerinden bizimle iletişime geçebilirsiniz. Binance Gift Card, kart veya havale ödemeniz onaylandığında lisans anahtarınız ve kurulum dosyalarınız doğrudan iletilir.",
+            faq_a2: "İstediğiniz paketi seçtikten sonra discord.gg/prestigesystem üzerinden bizimle iletişime geçebilirsiniz. Binance Gift Card, kart veya havale ödemeniz onaylandığında lisans anahtarınız ve kurulum dosyalarınız doğrudan iletilir.",
             faq_q3: "Hangi Windows sürümleri destekleniyor?",
             faq_a3: "Güncel Windows 10 ve Windows 11 (64-bit) sistemlerde sorunsuz çalışır.",
             faq_q4: "Bilgisayar değiştirirsem lisansım ne olur?",
-            faq_a4: "1 aylık ve sınırsız paket kullanıcıları discord.gg/prstg üzerinden destek talebi açarak ücretsiz HWID sıfırlama talep edebilir.",
+            faq_a4: "1 aylık ve sınırsız paket kullanıcıları discord.gg/prestigesystem üzerinden destek talebi açarak ücretsiz HWID sıfırlama talep edebilir.",
 
             cta_eyebrow: "Başlayın",
             cta_title: "Hazır olduğunuzda başlayın.",
             cta_desc: "Discord sunucumuz üzerinden hızlı teslimat, düzenli güncellemeler ve doğrudan destek.",
-            cta_btn_dc: "discord.gg/prstg'ye Katıl",
+            cta_btn_dc: "discord.gg/prestigesystem'e Katıl",
             cta_btn_plans: "Paketleri İncele",
 
             foot_features: "Özellikler",
@@ -737,7 +737,7 @@
             mod_ca_lbl_rate: "Kur Hesaplama",
             mod_ca_val_rate: "Anlık güncel kur baz alınır",
             mod_cancel: "Kapat",
-            mod_go_dc: "discord.gg/prstg'ye Git",
+            mod_go_dc: "discord.gg/prestigesystem'e Git",
 
             dyn: {
                 docTitle: "Prestige External RobRun Cheat — Sade ve Kararlı Deneyim | Prestige System",
